@@ -13,7 +13,7 @@ function ProfileSidebar(props) {
 }
 
 export default function Home() {
-  const user = 'dresende';
+  const user = 'dimasresende';
   const [seguidores, setSeguidores] = useState([]);
   const pessoasFavoritas = seguidores.slice(0, 6);
 
