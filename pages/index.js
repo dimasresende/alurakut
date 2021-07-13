@@ -21,6 +21,8 @@ function ProfileSidebar(props) {
 
 export default function Home() {
   const user = 'dimasresende';
+  const [comunidades, setComunidades] = useState([]);
+
   const [seguidores, setSeguidores] = useState([]);
   const pessoasFavoritas = seguidores.slice(0, 6);
 
@@ -45,8 +47,52 @@ export default function Home() {
               <OrkutNostalgicIconSet />
             </h1>
           </Box>
+
+          <Box>
+            <h2 className="subTitle">O que você deseja fazer?</h2>
+            <form onSubmit={function handleCriaComunidade(e) {
+              e.preventDefault();
+              const dadosFormulario = new FormData(e.target);
+              const comunidade = {
+                id: new Date().toISOString(),
+                titulo: dadosFormulario.get('title'),
+                imagem: dadosFormulario.get('image'),
+              }
+
+              const comunidadesAtualizada = [...comunidades, comunidade];
+              setComunidades(comunidadesAtualizada);
+            }}>
+              <div>
+                <input type="text" placeholder="Qual vai ser o nome da sua comunidade?" name="title" aria-label="Qual vai ser o nome da sua comunidade?" />
+              </div>
+              <div>
+                <input type="text" placeholder="Coloque uma url para usarmos de capa." name="image" aria-label="Coloque uma url para usarmos de capa." />
+              </div>
+              <button>
+                Criar comunidade
+              </button>
+            </form>
+          </Box>
         </div>
         <div className="profileRelationsArea" style={{gridArea: 'profileRelationsArea'}}>
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">
+              Comunidades
+            </h2>
+
+            <ul>
+              {comunidades.map((itemAtual) => {
+                return (
+                  <li key={itemAtual.id}>
+                    <a href={`${itemAtual.titulo}`}>
+                      <img src={`${itemAtual.imagem}`} />
+                      <span>{itemAtual.titulo}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade ({seguidores.length})
