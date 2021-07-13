@@ -59,11 +59,11 @@ export default function Home() {
 
   return (
     <>
-      <AlurakutMenu />
+      <AlurakutMenu githubUser={user} />
       <MainGrid>
-        <div className="profileArea" style={{gridArea: 'profileArea'}}>
+        <aside className="profileArea" style={{gridArea: 'profileArea'}}>
           <ProfileSidebar githubUser={user} />
-        </div>
+        </aside>
         <div className="welcomeArea" style={{gridArea: 'welcomeArea'}}>
           <Box>
             <h1 className="title">
