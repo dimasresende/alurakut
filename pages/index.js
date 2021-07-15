@@ -57,6 +57,29 @@ export default function Home() {
     setComunidades(comunidadesAtualizada);
   };
 
+  function ProfileRelationsBox(props) {
+    return (
+      <ProfileRelationsBoxWrapper>
+        <h2 className="smallTitle">
+          {props.title} ({props.items.length})
+        </h2>
+
+        <ul>
+          {props.items.map((itemAtual) => {
+            return (
+              <li key={itemAtual.id}>
+                <a href={`${itemAtual.url}`}>
+                  <img src={`${itemAtual.imagem}`} />
+                  <span>{itemAtual.titulo}</span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </ProfileRelationsBoxWrapper>
+    )
+  }
+
   return (
     <>
       <AlurakutMenu githubUser={user} />
@@ -89,24 +112,7 @@ export default function Home() {
           </Box>
         </div>
         <div className="profileRelationsArea" style={{gridArea: 'profileRelationsArea'}}>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Comunidades
-            </h2>
-
-            <ul>
-              {comunidades.map((itemAtual) => {
-                return (
-                  <li key={itemAtual.id}>
-                    <a href={`${itemAtual.url}`}>
-                      <img src={`${itemAtual.imagem}`} />
-                      <span>{itemAtual.titulo}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBox title="Comunidades" items={comunidades} />
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
               Pessoas da comunidade ({seguidores.length})
