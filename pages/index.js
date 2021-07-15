@@ -31,6 +31,32 @@ export default function Home() {
     const urlFollowers = `https://api.github.com/users/${user}/followers`;
     const response = await fetch(urlFollowers);
     setSeguidores(await response.json());
+    
+    //API do DatoCMS (GraphQL) para pegar as comunidades cadastradas
+    const urlDato = `https://graphql.datocms.com/`;
+    const responseComunidade = await fetch(urlDato, {
+      method: 'POST',
+      headers: {
+        'Authorization': '53a2c2103b0b782e97fc2debe54eef',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({"query": `query {
+        allCommunities {
+          id
+          title
+          image
+          url
+          creatorid
+          _status
+          _firstPublishedAt
+        }
+      }`})
+    });
+    const retornoComunidades = await responseComunidade.json();
+    setComunidades(retornoComunidades.data.allCommunities);
+
+
   }, []);
 
   function handleCriaComunidade(e) {
@@ -70,8 +96,8 @@ export default function Home() {
             return (
               <li key={itemAtual.id}>
                 <a href={`${itemAtual.url}`}>
-                  <img src={`${itemAtual.imagem}`} />
-                  <span>{itemAtual.titulo}</span>
+                  <img src={`${itemAtual.image}`} />
+                  <span>{itemAtual.title}</span>
                 </a>
               </li>
             )
