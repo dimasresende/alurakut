@@ -27,8 +27,9 @@ export default function Home() {
   const pessoasFavoritas = seguidores.slice(0, 6);
 
   useEffect(async () => {
-    const url = `https://api.github.com/users/${user}/followers`;
-    const response = await fetch(url);
+    //Seguidores do Github
+    const urlFollowers = `https://api.github.com/users/${user}/followers`;
+    const response = await fetch(urlFollowers);
     setSeguidores(await response.json());
   }, []);
 
