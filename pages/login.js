@@ -26,7 +26,7 @@ export default function LoginPage() {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({githubUser: `dimasresende`})
+              body: JSON.stringify({githubUser: githubUser})
             }).then(async (respostaDoServer) => {
               const dadosDaResposta = await respostaDoServer.json();
               nookies.set(null, 'USER_TOKEN', dadosDaResposta.token, {

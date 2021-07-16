@@ -4,6 +4,7 @@ import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { useEffect, useState } from 'react';
 import nookies from 'nookies';
+import jwt from 'jsonwebtoken';
 
 function ProfileSidebar(props) {
   return (
@@ -179,10 +180,26 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   const cookie = nookies.get(context);
   const token = cookie.USER_TOKEN;
+  const { githubUser } = jwt.decode(token);
+
+  const { isAuthenticated } = await fetch('https://alurakut.vercel.app/api/auth', {
+    headers: {
+      Authorization: token
+    }
+  }).then((resposta) => resposta.json())
+
+  if(!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
-      githubUser: 'dimasresende'
+      githubUser: `${githubUser}`
     }, // will be passed to the page component as props
   }
 }
