@@ -37,7 +37,7 @@ export default function Home() {
     const responseComunidade = await fetch(urlDato, {
       method: 'POST',
       headers: {
-        'Authorization': '53a2c2103b0b782e97fc2debe54eef',
+        'Authorization': `${process.env.DATO_READ}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
@@ -48,8 +48,6 @@ export default function Home() {
           image
           url
           creatorid
-          _status
-          _firstPublishedAt
         }
       }`})
     });
@@ -59,23 +57,36 @@ export default function Home() {
 
   }, []);
 
-  function handleCriaComunidade(e) {
+  async function handleCriaComunidade(e) {
     e.preventDefault();
     const dadosFormulario = new FormData(e.target);
     const formTitle = dadosFormulario.get('title');
     const formURL = dadosFormulario.get('url') || 'https://github.com';
-    const image = 'https://picsum.photos/200/300?' + new Date().getMilliseconds();
+    const imagem = 'https://picsum.photos/200/300?' + new Date().getMilliseconds();
+    const idUsuario = `${user}`;
 
     if (formTitle == '') {
       return;
     }
 
-    const comunidade = {
-      id: new Date().toISOString(),
-      titulo: formTitle,
+    const criaComunidade = {
+      title: formTitle,
       url: formURL,
-      imagem: image,
+      image: imagem,
+      creatorid: idUsuario,
     }
+
+    const comunidadeCriada = await fetch('/api/comunidades/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(criaComunidade)
+    })
+
+    // const comunidade = await comunidadeCriada.json();
+    const comunidadeEnviada = await comunidadeCriada.json();
+    const comunidade = comunidadeEnviada.registro;
 
     const comunidadesAtualizada = [...comunidades, comunidade];
     document.getElementById('textTitulo').value = '';
