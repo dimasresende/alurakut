@@ -6,8 +6,6 @@ export default function LogoutPage() {
   const router = useRouter();
 
   useEffect(async () => {
-    console.log('asdasd')
-
     nookies.destroy(null, 'USER_TOKEN');
     router.push('/login');
 
