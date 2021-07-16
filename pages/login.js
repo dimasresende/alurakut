@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import nookies from 'nookies';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,6 +29,10 @@ export default function LoginPage() {
               body: JSON.stringify({githubUser: `dimasresende`})
             }).then(async (respostaDoServer) => {
               const dadosDaResposta = await respostaDoServer.json();
+              nookies.set(null, 'USER_TOKEN', dadosDaResposta.token, {
+                path: '/',
+                maxAge: 86400 * 7
+              });
               router.push('/');
             })
                       

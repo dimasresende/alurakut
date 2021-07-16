@@ -3,6 +3,7 @@ import Box from '../src/components/Box';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommons';
 import { useEffect, useState } from 'react';
+import nookies from 'nookies';
 
 function ProfileSidebar(props) {
   return (
@@ -19,8 +20,8 @@ function ProfileSidebar(props) {
   )
 }
 
-export default function Home() {
-  const user = 'dimasresende';
+export default function Home(props) {
+  const user = props.githubUser;
   const [comunidades, setComunidades] = useState([]);
 
   const [seguidores, setSeguidores] = useState([]);
@@ -173,4 +174,15 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookie = nookies.get(context);
+  const token = cookie.USER_TOKEN;
+
+  return {
+    props: {
+      githubUser: 'dimasresende'
+    }, // will be passed to the page component as props
+  }
 }
